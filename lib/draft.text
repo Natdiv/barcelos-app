@@ -1,0 +1,15 @@
+nosMeilleurs.add(Padding(
+padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+child: Container(
+height: 200.0,
+decoration: BoxDecoration(
+gradient: const LinearGradient(
+colors: [Colors.white, Color(0XFFFC3901)],
+begin: Alignment.topLeft,
+end: Alignment.bottomRight),
+borderRadius: BorderRadius.circular(15.0),
+image: DecorationImage(
+image: AssetImage(itemsLocalList[i].foodImage),
+fit: BoxFit.contain)),
+),
+));
