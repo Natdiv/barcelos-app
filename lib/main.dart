@@ -26,56 +26,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<ItemsModel> itemsLocalList = [
-    ItemsModel(
-        foodDescription: '',
-        foodName: 'Shawarma Vegan',
-        foodPrice: 5000,
-        foodRate: 4,
-        foodImage: 'assets/plate1.png'),
-    ItemsModel(
-        foodDescription: '',
-        foodName: 'Shawarma Poulet',
-        foodPrice: 4000,
-        foodRate: 4,
-        foodImage: 'assets/plate2.png'),
-    ItemsModel(
-        foodDescription: '',
-        foodName: 'Hamburger',
-        foodPrice: 8000,
-        foodRate: 4,
-        foodImage: 'assets/plate3.png'),
-    ItemsModel(
-        foodDescription: '',
-        foodName: 'Frites Poulet',
-        foodPrice: 10000,
-        foodRate: 4,
-        foodImage: 'assets/plate4.png'),
-    ItemsModel(
-        foodDescription: '',
-        foodName: 'Fites Salade',
-        foodPrice: 8000,
-        foodRate: 4,
-        foodImage: 'assets/plate5.png'),
-    ItemsModel(
-        foodDescription: '',
-        foodName: 'Kebabs',
-        foodPrice: 6000,
-        foodRate: 4,
-        foodImage: 'assets/plate6.png'),
-    ItemsModel(
-        foodDescription: '',
-        foodName: 'Shawarma Viande',
-        foodPrice: 10000,
-        foodRate: 4,
-        foodImage: 'assets/plate1.png'),
-    ItemsModel(
-        foodDescription: '',
-        foodName: 'Shawarma Vegan',
-        foodPrice: 5000,
-        foodRate: 4,
-        foodImage: 'assets/plate2.png'),
-  ];
+
+  List<ItemsModel> itemsLocalList = [];
   final Set<ItemsModel> _panier = {};
   late Future<dynamic> futureItems;
 
@@ -131,25 +83,31 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [DrawerHeader(child: Container())],
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          const SizedBox(height: 20.0),
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: FutureBuilder<dynamic>(
+        future: futureItems,
+        builder: (context, snapshot) {
+
+          if (snapshot.hasData) {
+            itemsLocalList = ItemsModel.buildListItemsFromJson(snapshot.data['data']);
+            return ListView(
               children: <Widget>[
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.menu),
-                  color: Colors.black,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications),
-                  color: Colors.black,
-                ),
-                /*Container(
+                const SizedBox(height: 20.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.menu),
+                        color: Colors.black,
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.notifications),
+                        color: Colors.black,
+                      ),
+                      /*Container(
                 height: 40.0,
                 width: 40.0,
                 decoration: BoxDecoration(
@@ -158,55 +116,70 @@ class _MyHomePageState extends State<MyHomePage> {
                         image: AssetImage('assets/avocado.png'),
                         fit: BoxFit.cover)),
               )*/
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const <Widget>[
+                      Text('Bienvenu',
+                          style: TextStyle(
+                              fontFamily: 'Futur',
+                              fontWeight: FontWeight.bold,
+                              color: AppStyle.premierChoix,
+                              fontSize: 42.0)),
+                      Text('Chez Barcelos',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppStyle.premierChoix,
+                              fontSize: 42.0)),
+                      SizedBox(height: 20.0),
+                      Text('Plats Populares',
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17.0))
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 7.0),
+                Container(
+                  height: 250.0,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: _buildListItem(),
+                  ),
+                ),
+
+                const SizedBox(height: 20.0),
+                const Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text('Nos Meilleurs',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17.0))),
+                const SizedBox(height: 20.0),
+                ..._buildNosMeilleurs(),
+                const SizedBox(height: 20.0)
               ],
+            );
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+
+          // By default, show a loading spinner.
+          return Container(
+            width: 250,
+            height: 250,
+            child: const Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
-          const SizedBox(height: 10.0),
-          Padding(
-            padding: const EdgeInsets.only(left: 25.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Text('Bienvenu',
-                    style: TextStyle(
-                        fontFamily: 'Futur',
-                        fontWeight: FontWeight.bold,
-                        color: AppStyle.premierChoix,
-                        fontSize: 42.0)),
-                Text('Chez Barcelos',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppStyle.premierChoix,
-                        fontSize: 42.0)),
-                SizedBox(height: 20.0),
-                Text('Plats Populares',
-                    style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17.0))
-              ],
-            ),
-          ),
-          const SizedBox(height: 7.0),
-          Container(
-            height: 250.0,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: _buildListItem(),
-            ),
-          ),
-          const SizedBox(height: 20.0),
-          const Padding(
-              padding: EdgeInsets.only(left: 20.0),
-              child: Text('Nos Meilleurs',
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17.0))),
-          const SizedBox(height: 20.0),
-          ..._buildNosMeilleurs(),
-          const SizedBox(height: 20.0)
-        ],
+          );
+        },
       ),
       bottomNavigationBar: Container(
         height: 75.0,
@@ -286,7 +259,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image:
-                                        AssetImage(itemsLocalList[i].foodImage),
+                                    NetworkImage(itemsLocalList[i].foodImage),
                                     fit: BoxFit.contain),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(10.0),
@@ -418,7 +391,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image:
-                                        AssetImage(itemsLocalList[i].foodImage),
+                                    NetworkImage(itemsLocalList[i].foodImage),
                                     fit: BoxFit.contain),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(10.0),

@@ -1,3 +1,4 @@
+import 'package:barcelos/addresse_livraison.dart';
 import 'package:barcelos/commande.dart';
 import 'package:barcelos/const.dart';
 import 'package:barcelos/models/commandes.dart';
@@ -5,12 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+
 class CommandePage extends StatefulWidget {
   @override
   _CommandePageState createState() => _CommandePageState();
 }
 
 class _CommandePageState extends State<CommandePage> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +137,7 @@ class _CommandePageState extends State<CommandePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return CommandePage();
+                      return AdresseLivraisonPage();
                     }),
                   )
                 },
@@ -140,7 +145,7 @@ class _CommandePageState extends State<CommandePage> {
                   baseColor: Vx.gray200,
                   highlightColor: Vx.gray50,
                   enabled: true,
-                  child: 'Passer la commande'
+                  child: 'Valider la commande'
                       .text
                       .xl2
                       .medium

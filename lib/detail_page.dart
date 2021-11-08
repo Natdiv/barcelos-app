@@ -75,7 +75,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         width: 250.0,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage(widget.item.foodImage),
+                                image: NetworkImage(widget.item.foodImage),
                                 fit: BoxFit.cover)),
                       ))),
               Align(

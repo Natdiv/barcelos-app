@@ -14,20 +14,23 @@ class ItemsModel {
   final double foodPrice;
   final int foodRate;
   final String foodImage;
+  static String url = 'https://baarcelosh.000webhostapp.com/vegi_backend_29/public/';
+
+  static List<dynamic> itemsFromServer = [];
 
   factory ItemsModel.fromJson(Map<String, dynamic> json) {
     return ItemsModel(
-      foodRate: json['foodRate'],
-      foodPrice: json['foodPrice'],
-      foodName: json['foodName'],
-      foodDescription: json['foodDescription'],
-      foodImage: json['foodImage']
+      foodRate: 4,
+      foodPrice: double.parse(json['sale_price']),
+      foodName: json['name'],
+      foodDescription: json['description'],
+      foodImage: url + json['image']
     );
   }
 
   static Future<ItemsModel> fetchOneItems() async {
     final response = await http
-        .get(Uri.parse('http://192.168.43.112/barcelosapi/empty_vergi_product.php'));
+        .get(Uri.parse('https://baarcelosh.000webhostapp.com/barcelosapi/empty_vergi_product.php'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -43,17 +46,25 @@ class ItemsModel {
 
   static Future<dynamic> fetchItems() async {
     final response = await http
-        .get(Uri.parse('http://192.168.43.112/barcelosapi/empty_vergi_product.php'));
+        .get(Uri.parse('https://baarcelosh.000webhostapp.com/barcelosapi/empty_vergi_product.php'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      print(jsonDecode(response.body)['data']);
+      // print(jsonDecode(response.body)['data'].runtimeType);
       return jsonDecode(response.body);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load album');
     }
+  }
+
+  static List<ItemsModel> buildListItemsFromJson(List<dynamic> json) {
+    List<ItemsModel> list = [];
+    for(var i = 0; i < json.length; i++) {
+      list.add(ItemsModel.fromJson(json[i]));
+    }
+    return list;
   }
 }

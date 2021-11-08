@@ -4,7 +4,11 @@
    <application
         android:label="barcelos"
         android:icon="@mipmap/ic_launcher">
-        <activity
+
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyAV-eonZAKJqq56PxfB3hFj_K1GhLWM7L0"/>
+
+       <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"

@@ -148,9 +148,7 @@ class _PanierPageState extends State<PanierPage> {
                                       color: AppStyle.premierChoix),
                                   onPressed: () {
                                     setState(() {
-                                      if(!(commande.quantite == 1)){
-                                        widget.onAjoutAuPanier(Commandes(item: commande.item, quantite: commande.quantite + 1));
-                                      }
+                                      widget.onAjoutAuPanier(Commandes(item: commande.item, quantite: commande.quantite + 1));
                                     });
                                   },
                                 )
