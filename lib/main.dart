@@ -3,7 +3,7 @@ import 'package:barcelos/models/commandes.dart';
 import 'package:barcelos/models/items.dart';
 import 'package:barcelos/panier.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:splash_screen_view/SplashScreenView.dart';
 
 import 'detail_page.dart';
 
@@ -11,11 +11,27 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
+    Widget example1 = SplashScreenView(
+      navigateRoute: MyHomePage(),
+      pageRouteTransition: PageRouteTransition.SlideTransition,
+      duration: 5000,
+      imageSize: 150,
+      imageSrc: "assets/logo.png",
+      text: "Bienvenu",
+      textType: TextType.NormalText,
+      textStyle: const TextStyle(
+        fontSize: 30.0,
+        fontWeight: FontWeight.bold,
+        color: AppStyle.premierChoix,
+      ),
+      backgroundColor: Colors.white,
+    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      home: example1,
     );
   }
 }
@@ -26,15 +42,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   List<ItemsModel> itemsLocalList = [];
   final Set<ItemsModel> _panier = {};
   late Future<dynamic> futureItems;
 
+  bool isErrorOnFetchFound = false;
+
   @override
   initState() {
     super.initState();
-    futureItems = ItemsModel.fetchItems();
+    futureItems = ItemsModel.fetchItems(_errorOnFecth);
+  }
+
+  void _errorOnFecth(){
+    isErrorOnFetchFound = true;
   }
 
   void ajouterAuPanier(Commandes commande) {
@@ -42,24 +63,21 @@ class _MyHomePageState extends State<MyHomePage> {
     Commandes? xElement;
 
     setState(() {
-
-      for(var i = 0; i < Commandes.commandes.length; i++) {
-        if(Commandes.commandes.elementAt(i).item == commande.item) {
+      for (var i = 0; i < Commandes.commandes.length; i++) {
+        if (Commandes.commandes.elementAt(i).item == commande.item) {
           alreadyAdded = true;
           print('Already added');
-          Commandes.commandes.elementAt(i).quantite =commande.quantite;
+          Commandes.commandes.elementAt(i).quantite = commande.quantite;
           // xElement = Commandes.commandes.elementAt(i);
         }
       }
 
-
-      if(!alreadyAdded){
+      if (!alreadyAdded) {
         Commandes.commandes.add(commande);
         print('Ajout au panier de ${commande.item.foodName}');
       } else {
         print('Update au panier de ${commande.item.foodName}');
       }
-
     });
   }
 
@@ -86,9 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: FutureBuilder<dynamic>(
         future: futureItems,
         builder: (context, snapshot) {
-
           if (snapshot.hasData) {
-            itemsLocalList = ItemsModel.buildListItemsFromJson(snapshot.data['data']);
+            itemsLocalList =
+                ItemsModel.buildListItemsFromJson(snapshot.data['data']);
             return ListView(
               children: <Widget>[
                 const SizedBox(height: 20.0),
@@ -107,15 +125,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         icon: const Icon(Icons.notifications),
                         color: Colors.black,
                       ),
-                      /*Container(
-                height: 40.0,
-                width: 40.0,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(7.0),
-                    image: DecorationImage(
-                        image: AssetImage('assets/avocado.png'),
-                        fit: BoxFit.cover)),
-              )*/
                     ],
                   ),
                 ),
@@ -137,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: AppStyle.premierChoix,
                               fontSize: 42.0)),
                       SizedBox(height: 20.0),
-                      Text('Plats Populares',
+                      Text('Plats Populaires',
                           style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.w600,
@@ -153,7 +162,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: _buildListItem(),
                   ),
                 ),
-
                 const SizedBox(height: 20.0),
                 const Padding(
                     padding: EdgeInsets.only(left: 20.0),
@@ -171,13 +179,159 @@ class _MyHomePageState extends State<MyHomePage> {
             return Text('${snapshot.error}');
           }
 
-          // By default, show a loading spinner.
-          return Container(
-            width: 250,
-            height: 250,
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
+          return ListView(
+            children: <Widget>[
+              const SizedBox(height: 20.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.menu),
+                      color: Colors.black,
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.notifications),
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const <Widget>[
+                    Text('Bienvenu',
+                        style: TextStyle(
+                            fontFamily: 'Futur',
+                            fontWeight: FontWeight.bold,
+                            color: AppStyle.premierChoix,
+                            fontSize: 42.0)),
+                    Text('Chez Barcelos',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppStyle.premierChoix,
+                            fontSize: 42.0)),
+                    SizedBox(height: 20.0),
+                    Text('Plats Populaires',
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17.0))
+                  ],
+                ),
+              ),
+              const SizedBox(height: 7.0),
+              Container(
+                height: 250.0,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    InkWell(
+                        onTap: () {},
+                        child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20.0, top: 10.0, bottom: 10.0),
+                            child: Container(
+                                height: 200.0,
+                                width: 200.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 6.0,
+                                          color: Colors.grey.withOpacity(0.2),
+                                          spreadRadius: 5.0)
+                                    ]),
+                                child: const Center(
+                                  child: Center(
+                                    child: CircularProgressIndicator(color: AppStyle.premierChoix,)
+                                  ),
+                                )))),
+                    InkWell(
+                        onTap: () {},
+                        child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20.0, top: 10.0, bottom: 10.0),
+                            child: Container(
+                                height: 200.0,
+                                width: 200.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 6.0,
+                                          color: Colors.grey.withOpacity(0.2),
+                                          spreadRadius: 5.0)
+                                    ]),
+                                child: const Center(
+                                  child: Center(
+                                    child: CircularProgressIndicator(color: AppStyle.premierChoix),
+                                  ),
+                                ))))
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              const Padding(
+                  padding: EdgeInsets.only(left: 20.0),
+                  child: Text('Nos Meilleurs',
+                      style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17.0))),
+              const SizedBox(height: 20.0),
+              InkWell(
+                  onTap: () {},
+                  child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, top: 10.0, bottom: 10.0, right: 20.0),
+                      child: Container(
+                          height: 240.0,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 6.0,
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 5.0)
+                              ]),
+                          child: const Center(
+                            child: Center(
+                              child: CircularProgressIndicator(color: AppStyle.premierChoix),
+                            ),
+                          )))),
+              InkWell(
+                  onTap: () {},
+                  child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20.0, top: 10.0, bottom: 10.0, right: 20.0),
+                      child: Container(
+                          height: 240.0,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 6.0,
+                                    color: Colors.grey.withOpacity(0.2),
+                                    spreadRadius: 5.0)
+                              ]),
+                          child: const Center(
+                            child: Center(
+                              child: CircularProgressIndicator(color: AppStyle.premierChoix),
+                            ),
+                          )))),
+              const SizedBox(height: 20.0)
+            ],
           );
         },
       ),
@@ -201,9 +355,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             IconButton(
               onPressed: () {
-                Navigator.of(context).push((MaterialPageRoute(builder: (context) => PanierPage(onSuppressionDuPanier: supprimerDuPanier, onAjoutAuPanier: ajouterAuPanier,))));
+                Navigator.of(context).push((MaterialPageRoute(
+                    builder: (context) => PanierPage(
+                          onSuppressionDuPanier: supprimerDuPanier,
+                          onAjoutAuPanier: ajouterAuPanier,
+                        ))));
               },
-              icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+              icon:
+                  const Icon(Icons.shopping_cart_outlined, color: Colors.white),
             ),
             IconButton(
                 onPressed: () {},
@@ -258,8 +417,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             height: 175.0,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image:
-                                    NetworkImage(itemsLocalList[i].foodImage),
+                                    image: NetworkImage(
+                                        itemsLocalList[i].foodImage),
                                     fit: BoxFit.contain),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(10.0),
@@ -390,8 +549,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             height: 175.0,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
-                                    image:
-                                    NetworkImage(itemsLocalList[i].foodImage),
+                                    image: NetworkImage(
+                                        itemsLocalList[i].foodImage),
                                     fit: BoxFit.contain),
                                 borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(10.0),
@@ -461,9 +620,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                       Text(
                                           itemsLocalList[i]
-                                              .foodPrice
-                                          .round()
-                                              .toString() + ' FC',
+                                                  .foodPrice
+                                                  .round()
+                                                  .toString() +
+                                              ' FC',
                                           style: const TextStyle(
                                               fontFamily: 'Montserrat',
                                               fontWeight: FontWeight.w600,

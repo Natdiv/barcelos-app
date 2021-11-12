@@ -22,7 +22,7 @@ class _DetailsPageState extends State<DetailsPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final snackBar = SnackBar(
-    content: const Text('Plat ajouté au panier', style: TextStyle(fontSize: 18),),
+    content: const Text('Plat ajouté au panier', style: TextStyle(fontSize: 18,),),
     duration: const Duration(milliseconds: 2000),
     padding: const EdgeInsets.symmetric(
       horizontal: 10.0, // Inner padding for SnackBar content.
@@ -32,7 +32,7 @@ class _DetailsPageState extends State<DetailsPage> {
       borderRadius: BorderRadius.circular(10.0),
     ),
     action: SnackBarAction(
-      label: 'Annuler',
+      label: '',
       onPressed: () {
         // Some code to undo the change.
       },
@@ -237,7 +237,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     widget.onAjouterAuPanier(
                         Commandes(item: widget.item, quantite: quantite));
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    print('Ajouter au Panier...');
                   },
                   child: Container(
                     height: 50.0,

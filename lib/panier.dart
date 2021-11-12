@@ -158,7 +158,7 @@ class _PanierPageState extends State<PanierPage> {
                     },
                   ),
                 )),
-          Container(
+          (Commandes.commandes.isEmpty) ? SizedBox() : Container(
               margin: const EdgeInsets.only(left: 12, right: 12, bottom: 10),
               height: 50,
               padding: const EdgeInsets.all(0),

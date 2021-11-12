@@ -1,12 +1,10 @@
 import 'package:barcelos/addresse_livraison.dart';
-import 'package:barcelos/commande.dart';
 import 'package:barcelos/const.dart';
 import 'package:barcelos/models/commandes.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 class CommandePage extends StatefulWidget {

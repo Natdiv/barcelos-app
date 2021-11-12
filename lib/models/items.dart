@@ -14,7 +14,8 @@ class ItemsModel {
   final double foodPrice;
   final int foodRate;
   final String foodImage;
-  static String url = 'https://baarcelosh.000webhostapp.com/vegi_backend_29/public/';
+  static String remoteUrl = 'https://baarcelosh.000webhostapp.com/';
+  static String localUrl = 'http://192.168.43.112/';
 
   static List<dynamic> itemsFromServer = [];
 
@@ -24,39 +25,29 @@ class ItemsModel {
       foodPrice: double.parse(json['sale_price']),
       foodName: json['name'],
       foodDescription: json['description'],
-      foodImage: url + json['image']
+      foodImage: remoteUrl + 'vegi_backend_29/public/' + json['image']
     );
   }
 
-  static Future<ItemsModel> fetchOneItems() async {
-    final response = await http
-        .get(Uri.parse('https://baarcelosh.000webhostapp.com/barcelosapi/empty_vergi_product.php'));
+  static Future<dynamic> fetchItems(Function errorOnFetch) async {
 
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      print(response.body);
-      return ItemsModel.fromJson(jsonDecode(response.body));
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
-    }
-  }
+    try{
+      final response = await http
+          .get(Uri.parse(remoteUrl + 'barcelosapi/empty_vergi_product.php'));
 
-  static Future<dynamic> fetchItems() async {
-    final response = await http
-        .get(Uri.parse('https://baarcelosh.000webhostapp.com/barcelosapi/empty_vergi_product.php'));
-
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      // print(jsonDecode(response.body)['data'].runtimeType);
-      return jsonDecode(response.body);
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
+      if (response.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        // print(jsonDecode(response.body)['data'].runtimeType);
+        return jsonDecode(response.body);
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        //throw Exception('Failed to load data');
+        errorOnFetch();
+      }
+    }catch (e){
+      errorOnFetch();
     }
   }
 
