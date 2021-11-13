@@ -6,11 +6,24 @@ Application mobile du restaurant barcelos permettant de passer les commandes a d
 
 ## Captures d'images
 ![This is an image](screenshot/flutter_01.png)
+
 ![This is an image](screenshot/flutter_02.png)
+
 ![This is an image](screenshot/flutter_03.png)
+
 ![This is an image](screenshot/flutter_01_.png)
+
 ![This is an image](screenshot/flutter_07.png)
+
 ![This is an image](screenshot/flutter_08.png)
 
-Contactez-moi sur instagram, facebook, twitter avec l'identifiant `@natdiv9` ou aller sur notre site 
-[Goomy](https://goomy.tech) pour en savoir plus.
+## Développeur
+
+### **Christian Mwamba**
+
+## Contact
+- [Facebook](https://facebook.com/natdiv9)
+- [Instagram](https://instagram.com/natdiv9)
+- [Twitter](https://twitter.com/natdiv9)
+- [LinkedIn](https://linkedin.com/natdiv9)
+- [Site web](https://goomy.tech)
