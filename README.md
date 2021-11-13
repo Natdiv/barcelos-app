@@ -1,6 +1,8 @@
-# barcelos
+# **Barcelos**
 
-A new Flutter application.
+Application mobile du restaurant barcelos permettant de passer les commandes a distance afin de se faire livrer.
+
+> _Cette application n'est pas utilisée par le restaurant Barcelos, c'est juste à titre de démonstration que j'ai choisi ce nom.
 
 ## Getting Started
 
