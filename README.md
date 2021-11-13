@@ -13,4 +13,4 @@ Application mobile du restaurant barcelos permettant de passer les commandes a d
 ![This is an image](screenshot/flutter_08.png)
 
 Contactez-moi sur instagram, facebook, twitter avec l'identifiant `@natdiv9` ou aller sur notre site 
-[online documentation](https://goomy.tech).
+[Goomy](https://goomy.tech) pour en savoir plus.
